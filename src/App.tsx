@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import './App.css';
 
-let mappedList: any;
-
 function App() {
 
   const [item, setItem] = useState('');
@@ -40,11 +38,9 @@ function App() {
   }
 
   function itemsLeftToPurchase (event: any, index: number) {
-    console.log(list);
     const list2 = list;
     list2[index][3] = !(list2[index][3]);
     setList([...list2]);
-    // console.log(list2);
     if (event.target.checked) {
       setItemsLeft(itemsLeft - 1);
     } else {
@@ -76,7 +72,14 @@ function App() {
     )
   }
 
-  mappedList = list.map(showList);
+  // function pickNotPurchased ( [[item, quantity, unit, purchased]]: [[item: string, quantity: string, unit: string, purchased: boolean]] ) {
+
+  let mappedList = list.map(showList);
+  const listNotPurchased = list.filter(([ , , , purchased]: [null, null, null, boolean]) => {
+    return (purchased === false) 
+  } )
+
+  let mappedListNotPurchased = listNotPurchased.map(showList);
 
   return (
     <div>
@@ -108,8 +111,12 @@ function App() {
       </form>
       <button onClick = {() => addItem()}> Add item </button>
       <p>The number of items left to purchase is: {itemsLeft}</p>
-      
       {mappedList}
+      <hr />
+      <hr />
+      <p>List of items not purchased:</p>
+      <br />
+      {mappedListNotPurchased}
     </div>
   )
 }
