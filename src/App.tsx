@@ -11,12 +11,10 @@ function App() {
   const [unit, setUnit] = useState("kilo");
   const [error, setError] = useState('');
   const [itemsLeft, setItemsLeft] = useState(0);
-  const [purchased, setPurchased] = useState(false);
+  const purchased = false;
 
   function handleChange( event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement> ) {
-    console.log(event);
     const {name, value} = event.target
-    console.log({name, value});
     name === "Item" ? setItem(value)
     : name === "Quantity" ? setQuantity(value)
     : setUnit(value)
@@ -28,7 +26,7 @@ function App() {
     }
     else {
       setError("");
-      const addInfo = [item, quantity, unit];
+      const addInfo = [item, quantity, unit, purchased];
       setList([...list, addInfo]);
       setItemsLeft(itemsLeft + 1);
     }
@@ -41,9 +39,17 @@ function App() {
     setItemsLeft(itemsLeft - 1);
   }
 
-  function itemsLeftToPurchase (event: any) {
-    event.target.checked ? setItemsLeft(itemsLeft - 1)
-    : setItemsLeft(itemsLeft + 1)
+  function itemsLeftToPurchase (event: any, index: number) {
+    console.log(list);
+    const list2 = list;
+    list2[index][3] = !(list2[index][3]);
+    setList([...list2]);
+    // console.log(list2);
+    if (event.target.checked) {
+      setItemsLeft(itemsLeft - 1);
+    } else {
+     setItemsLeft(itemsLeft + 1)
+    }
   }
 
   function showList ( [ item, quantity, unit ]: string[], index: number ) {
@@ -61,7 +67,7 @@ function App() {
         <input 
         type="checkbox" 
         value="purchased"
-        onClick={itemsLeftToPurchase} /> 
+        onClick={(event) => itemsLeftToPurchase(event, index)} /> 
       </label>
       </p>
       <hr />
