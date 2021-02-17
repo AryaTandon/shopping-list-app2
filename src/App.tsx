@@ -72,14 +72,18 @@ function App() {
     )
   }
 
-  // function pickNotPurchased ( [[item, quantity, unit, purchased]]: [[item: string, quantity: string, unit: string, purchased: boolean]] ) {
-
   let mappedList = list.map(showList);
   const listNotPurchased = list.filter(([ , , , purchased]: [null, null, null, boolean]) => {
     return (purchased === false) 
   } )
-
   let mappedListNotPurchased = listNotPurchased.map(showList);
+
+  let successMessage = ""
+  if (itemsLeft === 0 && list.length > 1) {
+    successMessage = "Congrats, you have purchased all your items!"
+  } else {
+    successMessage = ""
+  }
 
   return (
     <div>
@@ -111,6 +115,7 @@ function App() {
       </form>
       <button onClick = {() => addItem()}> Add item </button>
       <p>The number of items left to purchase is: {itemsLeft}</p>
+      {successMessage}
       {mappedList}
       <hr />
       <hr />
