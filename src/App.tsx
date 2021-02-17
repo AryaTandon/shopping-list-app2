@@ -7,9 +7,11 @@ function App() {
 
   const [item, setItem] = useState('');
   const [quantity, setQuantity] = useState('');
-  const [list, setList] = useState([['']]);
+  const [list, setList]: any = useState([[]]);
   const [unit, setUnit] = useState("kilo");
   const [error, setError] = useState('');
+  const [itemsLeft, setItemsLeft] = useState(0);
+  const [purchased, setPurchased] = useState(false);
 
   function handleChange( event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement> ) {
     console.log(event);
@@ -28,6 +30,7 @@ function App() {
       setError("");
       const addInfo = [item, quantity, unit];
       setList([...list, addInfo]);
+      setItemsLeft(itemsLeft + 1);
     }
   }
 
@@ -35,6 +38,12 @@ function App() {
     let list2 = list;
     list2.splice(index, 1);
     setList([...list2]);
+    setItemsLeft(itemsLeft - 1);
+  }
+
+  function itemsLeftToPurchase (event: any) {
+    event.target.checked ? setItemsLeft(itemsLeft - 1)
+    : setItemsLeft(itemsLeft + 1)
   }
 
   function showList ( [ item, quantity, unit ]: string[], index: number ) {
@@ -51,7 +60,8 @@ function App() {
         Purchased?
         <input 
         type="checkbox" 
-        value="purchased" /> 
+        value="purchased"
+        onClick={itemsLeftToPurchase} /> 
       </label>
       </p>
       <hr />
@@ -91,6 +101,8 @@ function App() {
         </label>
       </form>
       <button onClick = {() => addItem()}> Add item </button>
+      <p>The number of items left to purchase is: {itemsLeft}</p>
+      
       {mappedList}
     </div>
   )
